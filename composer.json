@@ -1,4 +1,6 @@
 {
+    "name": "mobile-money-mg/mobile-money-mg",
+    "type": "library",
     "require": {
         "php": "^8.1",
         "guzzlehttp/guzzle": "^7.8",
