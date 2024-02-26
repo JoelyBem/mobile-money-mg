@@ -14,28 +14,24 @@ class MVola implements Payment
 {
     private string $apiKey;
     private Client $client;
-    private string $merchantNumber;
 
     private const INITIATE_TRANSACTION_ENDPOINT = '/mvola/mm/transactions/type/merchantpay/1.0.0/';
     private const CHECK_TRANSACTION_STATUS = '/mvola/mm/transactions/type/merchantpay/1.0.0/status/';
     private const userLanguage = 'mg';
-    private string $merchantName;
 
-    public function __construct(string $apiKey, Client $client, string $merchantNumber, string $merchantName)
+    public function __construct(string $apiKey, Client $client)
     {
         $this->apiKey = $apiKey;
         $this->client = $client;
-        $this->merchantNumber = $merchantNumber;
-        $this->merchantName = $merchantName;
     }
-    public function makePayment(string $phoneNumber, int $amount, string $clientId, string $description = ''): string
+    public function makePayment(string $merchantNumber, string $merchantName, string $phoneNumber, int $amount, string $clientId, string $description = ''): string
     {
         $headers = [
             'Version' => '1.0',
             'X-CorrelationID' => Uuid::uuid4()->toString(),
             'UserLanguage' => self::userLanguage,
-            'UserAccountIdentifier' => "msisdn;{$this->merchantNumber}",
-            'partnerName' => $this->merchantName,
+            'UserAccountIdentifier' => "msisdn;{$merchantNumber}",
+            'partnerName' => $merchantName,
             'Content-Type' => 'application/json',
             'Cache-Control' => 'no-cache',
             'Authorization' => "Bearer {$this->apiKey}"
@@ -51,7 +47,7 @@ class MVola implements Payment
             'debitParty' => [
                 [
                     'key' => 'msisdn',
-                    'value' => $this->merchantNumber
+                    'value' => $merchantNumber
                 ]
             ],
             'creditParty' => [
