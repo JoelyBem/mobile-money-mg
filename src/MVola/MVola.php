@@ -59,7 +59,7 @@ class MVola implements Payment
             'metadata' => [
                 [
                     'key' => 'partnerName',
-                    'value' => $this->merchantName
+                    'value' => $merchantName
                 ]
             ],
         ];
