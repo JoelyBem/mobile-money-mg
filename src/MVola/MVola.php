@@ -73,16 +73,16 @@ class MVola implements Payment
         return $jsonResponse['serverCorrelationId'];
     }
 
-    public function checkStatus(string $id): PaymentStatus
+    public function checkStatus(string $id, string $merchantNumber, string $merchantName, string $apiKey): PaymentStatus
     {
         $headers = [
             'Version' => '1.0',
             'X-CorrelationID' => $id,
             'UserLanguage' => self::userLanguage,
-            'UserAccountIdentifier' => "msisdn;{$this->merchantNumber}",
-            'partnerName' => $this->merchantName,
+            'UserAccountIdentifier' => "msisdn;{$merchantNumber}",
+            'partnerName' => $merchantName,
             'Cache-Control' => 'no-cache',
-            'Authorization' => "Bearer {$this->apiKey}"
+            'Authorization' => "Bearer {$apiKey}"
         ];
 
         $uri = self::CHECK_TRANSACTION_STATUS . $id;
